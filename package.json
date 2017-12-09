@@ -1,0 +1,44 @@
+{
+  "name": "best-fitting-plane",
+  "version": "0.0.1",
+  "description": "A simple javascript library to find the best fitting plane between a set of points using a ransac algorithm",
+  "main": "index.js",
+  "scripts": {
+    "build-commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir build-commonjs",
+    "build-es": "cross-env BABEL_ENV=es babel src --out-dir build-es",
+    "build-umd-min": "cross-env BABEL_ENV=es webpack --config ./webpack-umd.config.js --env.minimize",
+    "build-umd": "cross-env BABEL_ENV=es webpack --config ./webpack-umd.config.js",
+    "clean": "del build-*",
+    "build": "npm-run-all clean build-commonjs build-es build-umd build-umd-min",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://danilosalvati@github.com/danilosalvati/best-fitting-plane.git"
+  },
+  "keywords": [
+    "ransac",
+    "point",
+    "geometry",
+    "fitting",
+    "plane"
+  ],
+  "author": "Danilo Salvati <salvati.danilo@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/danilosalvati/best-fitting-plane/issues"
+  },
+  "homepage": "https://github.com/danilosalvati/best-fitting-plane#readme",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-es2015": "^6.22.0",
+    "cross-env": "^5.1.1",
+    "del-cli": "^1.1.0",
+    "mathjs": "^3.17.0",
+    "npm-run-all": "^4.1.1",
+    "webpack": "^3.8.1"
+  }
+}
