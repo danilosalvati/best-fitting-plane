@@ -11,6 +11,7 @@
     "clean": "del build-*",
     "build": "npm-run-all clean build-commonjs build-es build-umd build-umd-min",
     "test": "cross-env BABEL_ENV=commonjs nyc --reporter=html --reporter=text mocha --require babel-register ./tests/*.spec.js"
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
