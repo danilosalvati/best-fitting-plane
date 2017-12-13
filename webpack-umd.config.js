@@ -1,9 +1,8 @@
-const path = require('path');
-const webpack = require('webpack');
+const path = require('path')
+const webpack = require('webpack')
 
 module.exports = function (env) {
-
-  let minimize = env && env.hasOwnProperty('minimize');
+  let minimize = env && env.hasOwnProperty('minimize')
 
   let config = {
     entry: {
@@ -12,18 +11,18 @@ module.exports = function (env) {
     output: {
       path: path.join(__dirname, 'build-umd'),
       filename: `best-fitting-plane${minimize ? '.min' : ''}.js`,
-      library: "BestFittingPlane",
-      libraryTarget: "umd"
+      library: 'BestFittingPlane',
+      libraryTarget: 'umd'
     },
-    externals:{
-      "mathjs": {
-        commonjs: "mathjs",
-        commonjs2: "mathjs",
-        amd: "mathjs",
-        root: "math"
+    externals: {
+      'mathjs': {
+        commonjs: 'mathjs',
+        commonjs2: 'mathjs',
+        amd: 'mathjs',
+        root: 'math'
       }
     },
-    devtool: "source-map",
+    devtool: 'source-map',
     resolve: {
       extensions: ['.js']
     },
@@ -38,10 +37,10 @@ module.exports = function (env) {
         ]
       }]
     },
-    plugins: [],
-  };
+    plugins: []
+  }
 
-  if (minimize) config.plugins.push(new webpack.optimize.UglifyJsPlugin());
+  if (minimize) config.plugins.push(new webpack.optimize.UglifyJsPlugin())
 
-  return config;
-};
+  return config
+}

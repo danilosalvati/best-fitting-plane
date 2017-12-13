@@ -6,7 +6,6 @@ import math from 'mathjs';
  * This will return a plane in the form Ax + By + C = z
  */
 export default (function (points) {
-
   // INPUT VALIDATION
 
   // Check if the input array is well-formed
@@ -35,16 +34,16 @@ export default (function (points) {
   // I also need to investigate upon vertical planes...
   // Probably I need to catch a pram for it
 
-  var M1_rows = [];
-  var M2_rows = [];
+  var M1Rows = [];
+  var M2Rows = [];
 
   points.forEach(function (point) {
-    M1_rows.push([point.x, point.y, 1]);
-    M2_rows.push([point.z]);
+    M1Rows.push([point.x, point.y, 1]);
+    M2Rows.push([point.z]);
   });
 
-  var M1 = math.matrix(M1_rows);
-  var M2 = math.matrix(M2_rows);
+  var M1 = math.matrix(M1Rows);
+  var M2 = math.matrix(M2Rows);
 
   var M1_T = math.transpose(M1); // transpose of M1
 

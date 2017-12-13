@@ -16,7 +16,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * This will return a plane in the form Ax + By + C = z
  */
 exports.default = function (points) {
-
   // INPUT VALIDATION
 
   // Check if the input array is well-formed
@@ -45,16 +44,16 @@ exports.default = function (points) {
   // I also need to investigate upon vertical planes...
   // Probably I need to catch a pram for it
 
-  var M1_rows = [];
-  var M2_rows = [];
+  var M1Rows = [];
+  var M2Rows = [];
 
   points.forEach(function (point) {
-    M1_rows.push([point.x, point.y, 1]);
-    M2_rows.push([point.z]);
+    M1Rows.push([point.x, point.y, 1]);
+    M2Rows.push([point.z]);
   });
 
-  var M1 = _mathjs2.default.matrix(M1_rows);
-  var M2 = _mathjs2.default.matrix(M2_rows);
+  var M1 = _mathjs2.default.matrix(M1Rows);
+  var M2 = _mathjs2.default.matrix(M2Rows);
 
   var M1_T = _mathjs2.default.transpose(M1); // transpose of M1
 
