@@ -7,6 +7,7 @@ const LSEWithWrongTypeParam = () => LSE({});
 const LSEWithoutPoints = () => LSE([[0, 0, 0], [1, 2, 3], [4, 5, 6]]);
 const LSEWithSomePoints1 = () => LSE([{x: 0, y: 0, z: 0}, [1, 2, 3], [4, 5, 6]]);
 const LSEWithSomePoints2 = () => LSE([{x: 0, y: 0, z: 0}, {x: "22", y: 5}, [4, 5, 6]]);
+const LSEWithSomePoints3 = () => LSE([{x: 0, y: 0, z: 0}, "", [4, 5, 6]]);
 const LSEWithOnlyOnePoint = () => LSE([{x: 0, y: 0, z: 0}]);
 const LSEWithOnlyTwoPoints = () => LSE([{x: 0, y: 0, z: 0}, {x: 10, y: 0, z: 0}]);
 
@@ -38,6 +39,11 @@ describe('LSE tests', () => {
     assert.throws(LSEWithSomePoints2, TypeError,
       'The input should contains only points ' +
       'with the following structure: {x:<number>, y:<number>, z:<number>}');
+
+    assert.throws(LSEWithSomePoints3, TypeError,
+      'The input should contains only points ' +
+      'with the following structure: {x:<number>, y:<number>, z:<number>}');
+
     done();
   });
 
