@@ -29,35 +29,35 @@ const meanPoints = (points) => {
  * This will return a plane in the form Ax + By + C = z
  */
 export default (points) => {
-// Compute mean of all points
-  let meanPoint = meanPoints(points);
 
-  let m1_11 = 0, m1_12 = 0, m1_21 = 0, m1_22 = 0;
-  let m2_11 = 0, m2_21 = 0;
+  // TODO: Fix comment
+  // I should follow what is stated here:
+  // https://stackoverflow.com/a/44315221
+  // https://it.wikipedia.org/wiki/Pseudo-inversa
+  // I also need to investigate upon vertical planes...
+  // Probably I need to catch a pram for it
+
+  let M1_rows = [];
+  let M2_rows = [];
 
   points.forEach(point => {
-    m1_11 += Math.pow((point.x - meanPoint.x), 2);
-    m1_12 += (point.x - meanPoint.x) * (point.y - meanPoint.y);
-    m1_22 += Math.pow((point.y - meanPoint.y), 2);
-    m2_11 += (point.x - meanPoint.x) * (point.z - meanPoint.z);
-    m2_21 += (point.y - meanPoint.y) * (point.z - meanPoint.z);
+    M1_rows.push([point.x, point.y, 1]);
+    M2_rows.push([point.z])
   });
 
-  m1_21 = m1_12;
+  let M1 = math.matrix(M1_rows);
+  let M2 = math.matrix(M2_rows);
 
-  let M1 = math.transpose(math.matrix([[m1_11, m1_12], [m1_21, m1_22]]));
-  let M2 = math.matrix([[m2_11], [m2_21]]);
+  let M1_T = math.transpose(M1); // transpose of M1
 
-  let resultMatrix = math.multiply(M1, M2);
+  let resultMatrix = math.multiply(math.inv(math.multiply(M1_T, M1)), M1_T, M2);
 
-  // Get A and B constants
+  // Get A, B and C constants
   let A = resultMatrix.get([0, 0]);
   let B = resultMatrix.get([1, 0]);
+  let C = resultMatrix.get([2, 0]);
 
-  // Find C constant
-  let C = points[0].z - A * points[0].x - B * points[0].y
-
-  return {A, B, C}
+  return {A, B, C};
 
 }
 

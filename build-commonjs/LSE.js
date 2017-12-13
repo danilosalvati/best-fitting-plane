@@ -41,37 +41,34 @@ var meanPoints = function meanPoints(points) {
  */
 
 exports.default = function (points) {
-  // Compute mean of all points
-  var meanPoint = meanPoints(points);
 
-  var m1_11 = 0,
-      m1_12 = 0,
-      m1_21 = 0,
-      m1_22 = 0;
-  var m2_11 = 0,
-      m2_21 = 0;
+  // TODO:
+  // THIS ALGORITHM IS NOT WORKING (OR IT DOES NOT DOING WHAT I AM EXPECTING...)
+  // I should follow what is stated here:
+  // https://stackoverflow.com/a/44315221
+  // https://it.wikipedia.org/wiki/Pseudo-inversa
+  // I also need to investigate upon vertical planes...
+  // Probably I need to catch a pram for it
+
+  var M1_rows = [];
+  var M2_rows = [];
 
   points.forEach(function (point) {
-    m1_11 += Math.pow(point.x - meanPoint.x, 2);
-    m1_12 += (point.x - meanPoint.x) * (point.y - meanPoint.y);
-    m1_22 += Math.pow(point.y - meanPoint.y, 2);
-    m2_11 += (point.x - meanPoint.x) * (point.z - meanPoint.z);
-    m2_21 += (point.y - meanPoint.y) * (point.z - meanPoint.z);
+    M1_rows.push([point.x, point.y, 1]);
+    M2_rows.push([point.z]);
   });
 
-  m1_21 = m1_12;
+  var M1 = _mathjs2.default.matrix(M1_rows);
+  var M2 = _mathjs2.default.matrix(M2_rows);
 
-  var M1 = _mathjs2.default.transpose(_mathjs2.default.matrix([[m1_11, m1_12], [m1_21, m1_22]]));
-  var M2 = _mathjs2.default.matrix([[m2_11], [m2_21]]);
+  var M1_T = _mathjs2.default.transpose(M1); // transpose of M1
 
-  var resultMatrix = _mathjs2.default.multiply(M1, M2);
+  var resultMatrix = _mathjs2.default.multiply(_mathjs2.default.inv(_mathjs2.default.multiply(M1_T, M1)), M1_T, M2);
 
-  // Get A and B constants
+  // Get A, B and C constants
   var A = resultMatrix.get([0, 0]);
   var B = resultMatrix.get([1, 0]);
-
-  // Find C constant
-  var C = points[0].z - A * points[0].x - B * points[0].y;
+  var C = resultMatrix.get([2, 0]);
 
   return { A: A, B: B, C: C };
 };

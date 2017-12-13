@@ -24408,39 +24408,68 @@ var meanPoints = function meanPoints(points) {
  * This will return a plane in the form Ax + By + C = z
  */
 /* harmony default export */ __webpack_exports__["a"] = (function (points) {
-  // Compute mean of all points
-  var meanPoint = meanPoints(points);
 
-  var m1_11 = 0,
-      m1_12 = 0,
-      m1_21 = 0,
-      m1_22 = 0;
-  var m2_11 = 0,
-      m2_21 = 0;
+  // TODO:
+  // THIS ALGORITHM IS NOT WORKING (OR IT DOES NOT DOING WHAT I AM EXPECTING...)
+  // I should follow what is stated here:
+  // https://stackoverflow.com/a/44315221
+  // https://it.wikipedia.org/wiki/Pseudo-inversa
+  // I also need to investigate upon vertical planes...
+  // Probably I need to catch a pram for it
+
+  var M1_rows = [];
+  var M2_rows = [];
 
   points.forEach(function (point) {
-    m1_11 += Math.pow(point.x - meanPoint.x, 2);
-    m1_12 += (point.x - meanPoint.x) * (point.y - meanPoint.y);
-    m1_22 += Math.pow(point.y - meanPoint.y, 2);
-    m2_11 += (point.x - meanPoint.x) * (point.z - meanPoint.z);
-    m2_21 += (point.y - meanPoint.y) * (point.z - meanPoint.z);
+    M1_rows.push([point.x, point.y, 1]);
+    M2_rows.push([point.z]);
   });
 
-  m1_21 = m1_12;
+  var M1 = __WEBPACK_IMPORTED_MODULE_0_mathjs___default.a.matrix(M1_rows);
+  var M2 = __WEBPACK_IMPORTED_MODULE_0_mathjs___default.a.matrix(M2_rows);
 
-  var M1 = __WEBPACK_IMPORTED_MODULE_0_mathjs___default.a.transpose(__WEBPACK_IMPORTED_MODULE_0_mathjs___default.a.matrix([[m1_11, m1_12], [m1_21, m1_22]]));
-  var M2 = __WEBPACK_IMPORTED_MODULE_0_mathjs___default.a.matrix([[m2_11], [m2_21]]);
+  var M1_T = __WEBPACK_IMPORTED_MODULE_0_mathjs___default.a.transpose(M1); // transpose of M1
 
-  var resultMatrix = __WEBPACK_IMPORTED_MODULE_0_mathjs___default.a.multiply(M1, M2);
+  var resultMatrix = __WEBPACK_IMPORTED_MODULE_0_mathjs___default.a.multiply(__WEBPACK_IMPORTED_MODULE_0_mathjs___default.a.inv(__WEBPACK_IMPORTED_MODULE_0_mathjs___default.a.multiply(M1_T, M1)), M1_T, M2);
 
-  // Get A and B constants
+  // Get A, B and C constants
   var A = resultMatrix.get([0, 0]);
   var B = resultMatrix.get([1, 0]);
-
-  // Find C constant
-  var C = points[0].z - A * points[0].x - B * points[0].y;
+  var C = resultMatrix.get([1, 0]);
 
   return { A: A, B: B, C: C };
+
+  /*
+  // Compute mean of all points
+    let meanPoint = meanPoints(points);
+  
+    let m1_11 = 0, m1_12 = 0, m1_21 = 0, m1_22 = 0;
+    let m2_11 = 0, m2_21 = 0;
+  
+    points.forEach(point => {
+      m1_11 += Math.pow((point.x - meanPoint.x), 2);
+      m1_12 += (point.x - meanPoint.x) * (point.y - meanPoint.y);
+      m1_22 += Math.pow((point.y - meanPoint.y), 2);
+      m2_11 += (point.x - meanPoint.x) * (point.z - meanPoint.z);
+      m2_21 += (point.y - meanPoint.y) * (point.z - meanPoint.z);
+    });
+  
+    m1_21 = m1_12;
+  
+    let M1 = math.transpose(math.matrix([[m1_11, m1_12], [m1_21, m1_22]]));
+    let M2 = math.matrix([[m2_11], [m2_21]]);
+  
+    let resultMatrix = math.multiply(M1, M2);
+  
+    // Get A and B constants
+    let A = resultMatrix.get([0, 0]);
+    let B = resultMatrix.get([1, 0]);
+  
+    // Find C constant
+    let C = points[0].z - A * points[0].x - B * points[0].y
+  
+    return {A, B, C}
+  */
 });
 
 /***/ }),
