@@ -15,6 +15,14 @@ module.exports = function (env) {
       library: "BestFittingPlane",
       libraryTarget: "umd"
     },
+    externals:{
+      "mathjs": {
+        commonjs: "mathjs",
+        commonjs2: "mathjs",
+        amd: "mathjs",
+        root: "math"
+      }
+    },
     devtool: "source-map",
     resolve: {
       extensions: ['.js']
