@@ -1,34 +1,36 @@
 import math from 'mathjs';
 
 /**
- * Compute the mean value of an array of points
- * @param points Input array with points coordinates
- * @return {Object} The point with the mean values of the coordinates
- */
-const meanPoints = (points) => {
-
-  let xSum = 0, ySum = 0, zSum = 0;
-
-  points.forEach(point => {
-    xSum += point.x;
-    ySum += point.y;
-    zSum += point.z;
-  });
-
-  return {
-    x: xSum / points.length,
-    y: ySum / points.length,
-    z: zSum / points.length
-  };
-
-};
-
-/**
  * Implementation of a Least Square Evaluation function as descripted in
  * https://www.geometrictools.com/Documentation/LeastSquaresFitting.pdf (par. 3)
  * This will return a plane in the form Ax + By + C = z
  */
 export default (points) => {
+
+  // INPUT VALIDATION
+
+  // Check if the input array is well-formed
+  if (!(points instanceof Array)) {
+    throw new TypeError('This function accepts only an Array of points as input');
+  }
+
+  if (points.length < 3) {
+    throw new TypeError('You need at least three points to define a plane');
+  }
+
+  points.forEach(point => {
+    if (!(point instanceof Object)) {
+      throw new TypeError('The input should contains only points ' +
+        'with the following structure: {x:<number>, y:<number>, z:<number>}');
+    } else {
+      if (isNaN(point.x) ||
+        isNaN(point.y) ||
+        isNaN(point.z)) {
+        throw new TypeError('The input should contains only points ' +
+          'with the following structure: {x:<number>, y:<number>, z:<number>}');
+      }
+    }
+  });
 
   // TODO: Fix comment
   // I should follow what is stated here:
