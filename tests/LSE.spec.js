@@ -61,4 +61,18 @@ describe('LSE tests', () => {
     assert.throws(LSEWithOnlyTwoPoints, TypeError, 'You need at least three points to define a plane')
     done()
   })
+
+  it('should return a plane passing for z = 0 when all points lies on it', (done) => {
+
+    let points = [{x:0,y:0,z:0},{x:1,y:0,z:0},{x:1,y:1,z:0}]
+    let plane = LSE(points)
+
+    assert.typeOf(plane, 'object')
+    //Check if the plane is horizontal and is passing for the origin
+    assert.strictEqual(plane.A,0)
+    assert.strictEqual(plane.B,0)
+    assert.strictEqual(plane.C,0)
+
+    done()
+  })
 })
