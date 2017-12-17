@@ -87,11 +87,23 @@ describe('LSE tests', () => {
     assert.hasAllKeys(plane, ['A', 'B', 'C']);
 
     // Ax + By + C = z => Ax + By + C - z = 0
-    assert.approximately(plane.A * points[0].x + plane.B * points[0].y + plane.C - points[0].z, 0, 0.0002)
-    assert.approximately(plane.A * points[1].x + plane.B * points[1].y + plane.C - points[1].z, 0, 0.0002)
-    assert.approximately(plane.A * points[2].x + plane.B * points[2].y + plane.C - points[2].z, 0, 0.0002)
+    assert.approximately(plane.A * points[0].x + plane.B * points[0].y + plane.C - points[0].z, 0, 0.0001)
+    assert.approximately(plane.A * points[1].x + plane.B * points[1].y + plane.C - points[1].z, 0, 0.0001)
+    assert.approximately(plane.A * points[2].x + plane.B * points[2].y + plane.C - points[2].z, 0, 0.0001)
 
     done()
   })
+
+  it('should return a vertical plane', (done) => {
+
+    let points = [{x: 5, y: 0, z: 5}, {x: 1, y: 0, z: 2}, {x: 1, y: 0, z: 0}]
+    let plane = LSE(points)
+
+    assert.typeOf(plane, 'object')
+    assert.hasAllKeys(plane, ['A', 'B', 'C']);
+
+    done()
+  })
+
 
 })
