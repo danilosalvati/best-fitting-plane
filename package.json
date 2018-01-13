@@ -31,7 +31,8 @@
   },
   "homepage": "https://github.com/danilosalvati/best-fitting-plane#readme",
   "dependencies": {
-    "mathjs": "^3.17.0"
+    "mathjs": "^3.17.0",
+    "svd-js": "^1.0.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

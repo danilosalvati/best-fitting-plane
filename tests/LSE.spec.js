@@ -29,7 +29,7 @@ describe('LSE tests', () => {
     done()
   })
 
-  it('should throws an error when the array some points and some other structures', (done) => {
+  it('should throws an error when the array has some points and some other structures', (done) => {
     assert.throws(LSEWithSomePoints1, TypeError,
       'The input should contains only points ' +
       'with the following structure: {x:<number>, y:<number>, z:<number>}')
@@ -45,7 +45,7 @@ describe('LSE tests', () => {
     done()
   })
 
-  it('should throws an error when the array some points and some other structures', (done) => {
+  it('should throws an error when the array has some points and some other structures', (done) => {
     assert.throws(LSEWithSomePoints1, TypeError,
       'The input should contains only points ' +
       'with the following structure: {x:<number>, y:<number>, z:<number>}')

@@ -1,4 +1,5 @@
 import math from 'mathjs'
+import {SVD} from 'svd-js'
 
 let computePlane = (points) => {
   try {
@@ -71,7 +72,7 @@ export default (points) => {
   })
 
   if (allYEquals) {
-    // Return a vertical Plane Ax + (K + C) = z Where K is the constant value for y
+    // Return a vertical Plane Ax + 0 * y + (K + C) = z Where K is the constant value for y
     throw new Error('To implement')
   }
 
@@ -103,6 +104,51 @@ export default (points) => {
     B = BVertical
     C = CVertical
   }
+
+  let meanCoordinates = (pointsArray) => {
+    let xs = 0
+    let ys = 0
+    let zs = 0
+    pointsArray.forEach(point => {
+      xs += point.x
+      ys += point.y
+      zs += point.z
+    })
+
+    return {
+      xMean: xs / pointsArray.length,
+      yMean: ys / pointsArray.length,
+      zMean: zs / pointsArray.length
+    }
+  }
+
+  let means = meanCoordinates(points)
+  let xs = []
+  let ys = []
+  let zs = []
+  points.forEach(point => {
+    xs.push(point.x - means.xMean)
+    ys.push(point.y - means.yMean)
+    zs.push(point.z - means.zMean)
+  })
+
+  let {u, q, v} = SVD([xs, ys, zs])
+
+  console.log('!!', means, u, q, v)
+  let N = []
+  for (let i = 0; i < xs.length; i++) {
+    // N[i] = -1 / v[xs.length - 1][xs.length - 1] * v[i][xs.length - 1]
+    N[i] = u[i][xs.length - 1]
+  }
+
+  A = N[0]
+  B = N[1]
+  C = math.multiply(math.matrix([-means.xMean, -means.yMean, -means.zMean]), math.matrix(N))
+
+  // N=-1/V(end,end)*V(:,end);
+  // A=N(1); B=N(2); C=-P*N;
+
+  console.log('???', A, B, C)
 
   return {A, B, C}
 }

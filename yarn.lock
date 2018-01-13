@@ -4041,6 +4041,10 @@ supports-color@^4.0.0, supports-color@^4.2.1:
   dependencies:
     has-flag "^2.0.0"
 
+svd-js@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/svd-js/-/svd-js-1.0.1.tgz#5bcd02e966ac9c235871172dc46380aa0e3a7595"
+
 table@^3.7.8:
   version "3.8.3"
   resolved "https://registry.yarnpkg.com/table/-/table-3.8.3.tgz#2bbc542f0fda9861a755d3947fefd8b3f513855f"
