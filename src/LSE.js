@@ -33,6 +33,19 @@ export default (points) => {
     }
   })
 
+  // Check if all points are aligned with the y-axis
+  let allYEquals = true
+  let prevY = points[0].y
+  for (let i = 1; i < points.length && allYEquals; i++) {
+    if (points[i].y !== prevY) {
+      allYEquals = false
+    }
+  }
+
+  if (allYEquals) {
+    throw new TypeError('Unable to find a plane for vertical points')
+  }
+
   let meanCoordinates = (pointsArray) => {
     let xs = 0
     let ys = 0

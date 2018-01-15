@@ -12,6 +12,7 @@ const LSEWithSomePoints2 = () => LSE([{x: 0, y: 0, z: 0}, {x: '22', y: 5}, [4, 5
 const LSEWithSomePoints3 = () => LSE([{x: 0, y: 0, z: 0}, '', [4, 5, 6]])
 const LSEWithOnlyOnePoint = () => LSE([{x: 0, y: 0, z: 0}])
 const LSEWithOnlyTwoPoints = () => LSE([{x: 0, y: 0, z: 0}, {x: 10, y: 0, z: 0}])
+const LSEVerticalPoints = () => LSE([{x: 5, y: 0, z: 5}, {x: 1, y: 0, z: 2}, {x: 1, y: 0, z: 0}])
 
 describe('LSE tests', () => {
   it('should throws an error when input is undefined', (done) => {
@@ -94,13 +95,8 @@ describe('LSE tests', () => {
     done()
   })
 
-  it('should return a vertical plane', (done) => {
-    let points = [{x: 5, y: 0, z: 5}, {x: 1, y: 0, z: 2}, {x: 1, y: 0, z: 0}]
-    let plane = LSE(points)
-
-    assert.typeOf(plane, 'object')
-    assert.hasAllKeys(plane, ['A', 'B', 'C'])
-
+  it('should return an error for vertical points', (done) => {
+    assert.throws(LSEVerticalPoints, TypeError, 'Unable to find a plane for vertical points')
     done()
   })
 })
