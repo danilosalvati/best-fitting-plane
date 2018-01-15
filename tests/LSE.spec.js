@@ -1,3 +1,5 @@
+/* global describe it */
+
 import {assert} from 'chai'
 
 import {LSE} from '../src/index'
@@ -63,14 +65,13 @@ describe('LSE tests', () => {
   })
 
   it('should return a plane passing for z = 0 when all points lies on it', (done) => {
-
     let points = [{x: 0, y: 0, z: 0}, {x: 1, y: 0, z: 0}, {x: 1, y: 1, z: 0}]
     let plane = LSE(points)
 
     assert.typeOf(plane, 'object')
-    assert.hasAllKeys(plane, ['A', 'B', 'C']);
+    assert.hasAllKeys(plane, ['A', 'B', 'C'])
 
-    //Check if the plane is horizontal and is passing for the origin
+    // Check if the plane is horizontal and is passing for the origin
     assert.strictEqual(plane.A, 0)
     assert.strictEqual(plane.B, 0)
     assert.strictEqual(plane.C, 0)
@@ -79,12 +80,11 @@ describe('LSE tests', () => {
   })
 
   it('should return a plane with all the three input points included', (done) => {
-
     let points = [{x: 5, y: 0, z: 5}, {x: 1, y: 0, z: 2}, {x: 1, y: 1, z: 0}]
     let plane = LSE(points)
 
     assert.typeOf(plane, 'object')
-    assert.hasAllKeys(plane, ['A', 'B', 'C']);
+    assert.hasAllKeys(plane, ['A', 'B', 'C'])
 
     // Ax + By + C = z => Ax + By + C - z = 0
     assert.approximately(plane.A * points[0].x + plane.B * points[0].y + plane.C - points[0].z, 0, 0.0001)
@@ -95,15 +95,12 @@ describe('LSE tests', () => {
   })
 
   it('should return a vertical plane', (done) => {
-
     let points = [{x: 5, y: 0, z: 5}, {x: 1, y: 0, z: 2}, {x: 1, y: 0, z: 0}]
     let plane = LSE(points)
 
     assert.typeOf(plane, 'object')
-    assert.hasAllKeys(plane, ['A', 'B', 'C']);
+    assert.hasAllKeys(plane, ['A', 'B', 'C'])
 
     done()
   })
-
-
 })
