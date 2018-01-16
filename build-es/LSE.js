@@ -1,10 +1,12 @@
-import math from 'mathjs';
+import { SVD } from 'svd-js';
 
 /**
  * Implementation of a Least Square Evaluation function as descripted in
  * https://www.geometrictools.com/Documentation/LeastSquaresFitting.pdf (par. 3)
  * This will return a plane in the form Ax + By + C = z
  */
+
+// TODO CHANGE COMMENT WITH THE NEW IMPLEMENTATION
 export default (function (points) {
   // INPUT VALIDATION
 
@@ -27,32 +29,57 @@ export default (function (points) {
     }
   });
 
-  // TODO: Fix comment
-  // I should follow what is stated here:
-  // https://stackoverflow.com/a/44315221
-  // https://it.wikipedia.org/wiki/Pseudo-inversa
-  // I also need to investigate upon vertical planes...
-  // Probably I need to catch a pram for it
+  // Check if all points are aligned with the y-axis
+  var allYEquals = true;
+  var prevY = points[0].y;
+  for (var i = 1; i < points.length && allYEquals; i++) {
+    if (points[i].y !== prevY) {
+      allYEquals = false;
+    }
+  }
 
-  var M1Rows = [];
-  var M2Rows = [];
+  if (allYEquals) {
+    throw new TypeError('Unable to find a plane for vertical points');
+  }
 
-  points.forEach(function (point) {
-    M1Rows.push([point.x, point.y, 1]);
-    M2Rows.push([point.z]);
+  var meanCoordinates = function meanCoordinates(pointsArray) {
+    var xs = 0;
+    var ys = 0;
+    var zs = 0;
+    pointsArray.forEach(function (point) {
+      xs += point.x;
+      ys += point.y;
+      zs += point.z;
+    });
+
+    return {
+      xMean: xs / pointsArray.length,
+      yMean: ys / pointsArray.length,
+      zMean: zs / pointsArray.length
+    };
+  };
+
+  var means = meanCoordinates(points);
+  var pointsNormalized = [];
+
+  for (var _i = 0; _i < points.length; _i++) {
+    pointsNormalized[_i] = new Array(3);
+  }
+
+  points.forEach(function (point, index) {
+    pointsNormalized[index][0] = point.x - means.xMean;
+    pointsNormalized[index][1] = point.y - means.yMean;
+    pointsNormalized[index][2] = point.z - means.zMean;
   });
 
-  var M1 = math.matrix(M1Rows);
-  var M2 = math.matrix(M2Rows);
+  var _SVD = SVD(pointsNormalized),
+      v = _SVD.v;
 
-  var M1_T = math.transpose(M1); // transpose of M1
+  var normalize = -1 / v[2][2];
 
-  var resultMatrix = math.multiply(math.inv(math.multiply(M1_T, M1)), M1_T, M2);
-
-  // Get A, B and C constants
-  var A = resultMatrix.get([0, 0]);
-  var B = resultMatrix.get([1, 0]);
-  var C = resultMatrix.get([2, 0]);
+  var A = v[0][2] * normalize;
+  var B = v[1][2] * normalize;
+  var C = -(means.xMean * A + means.yMean * B + means.zMean * v[2][2] * normalize);
 
   return { A: A, B: B, C: C };
 });
