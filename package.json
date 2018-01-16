@@ -1,6 +1,6 @@
 {
   "name": "best-fitting-plane",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A simple javascript library to find the best fitting plane between a set of points using a ransac algorithm",
   "main": "./build-commonjs/index.js",
   "module": "./build-es/index.js",
