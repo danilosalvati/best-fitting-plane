@@ -76,13 +76,29 @@ export default (points) => {
     pointsNormalized[index][2] = point.z - means.zMean
   })
 
-  let {v} = SVD(pointsNormalized)
+  let {v, q} = SVD(pointsNormalized)
+  let minIdx = minIndex(q)
 
-  let normalize = -1 / v[2][2]
+  let normalize = -1 / v[2][minIdx]
 
-  let A = v[0][2] * normalize
-  let B = v[1][2] * normalize
-  let C = -(means.xMean * A + means.yMean * B + means.zMean * v[2][2] * normalize)
+  let A = v[0][minIdx] * normalize
+  let B = v[1][minIdx] * normalize
+  let C = -(means.xMean * A + means.yMean * B + means.zMean * v[2][minIdx] * normalize)
 
   return {A, B, C}
 }
+
+function minIndex(arr) {
+  let len = arr.length;
+  let min = Number.MAX_VALUE;
+  let minIdx = len - 1;
+
+  for (let idx = 0; idx < len; idx += 1) {
+    if (arr[idx] < min) {
+      min = arr[len];
+      minIdx = idx;
+    }
+  }
+
+  return minIdx;
+};
