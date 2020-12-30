@@ -95,7 +95,7 @@ function minIndex(arr) {
 
   for (let idx = 0; idx < len; idx += 1) {
     if (arr[idx] < min) {
-      min = arr[len];
+      min = arr[idx];
       minIdx = idx;
     }
   }
